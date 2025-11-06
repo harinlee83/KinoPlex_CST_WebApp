@@ -11,6 +11,9 @@ from kinoplex_query import KinoPlexQuery
 from uniprot_integration import get_protein_data, get_sequence_motif
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'  # Change in production
@@ -23,7 +26,7 @@ logging.basicConfig(
 
 # Initialize the database query interface
 # This connection is reused across requests for efficiency
-db = KinoPlexQuery('kinoplex.db')
+db = KinoPlexQuery(os.getenv('KINOPLEX_DB_PATH', './kinoplex.db'))
 
 
 @app.route('/')
@@ -367,4 +370,4 @@ def about():
 if __name__ == '__main__':
     # Development server configuration
     # In production, use gunicorn or another WSGI server
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host=os.getenv("FLASK_RUN_HOST", "0.0.0.0"), port=int(os.getenv("FLASK_RUN_PORT", 5000)))

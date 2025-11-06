@@ -10,6 +10,10 @@ import pandas as pd
 import sqlite3
 from pathlib import Path
 import time
+import os
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 class KinoPlexDatabaseBuilder:
     """
@@ -348,14 +352,12 @@ class KinoPlexDatabaseBuilder:
 def main():
     """Main execution function"""
     
-    # Define file paths
-    # NOTE: Update these paths to match your actual file locations
-    phospho_path = '/Users/davidvanderwall/Desktop/Total_Phosphocompetency_STY.feather'
-    st_pssm_path = '/Users/davidvanderwall/Desktop/ST_PSSM_Percentiles.feather'
-    y_pssm_path = '/Users/davidvanderwall/Desktop/Y_PSSM_Percentiles.feather'
-    
+    phospho_path = os.getenv('KINOPLEX_PHOSPHO_PATH')
+    st_pssm_path = os.getenv('KINOPLEX_ST_PSSM_PATH')
+    y_pssm_path = os.getenv('KINOPLEX_Y_PSSM_PATH')
+
     # Create database
-    builder = KinoPlexDatabaseBuilder(db_path='kinoplex.db')
+    builder = KinoPlexDatabaseBuilder(db_path=os.getenv('KINOPLEX_DB_PATH', './kinoplex.db'))
     builder.build_database(phospho_path, st_pssm_path, y_pssm_path)
     
 

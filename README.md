@@ -104,7 +104,13 @@ pip install -r requirements.txt
 
 3. **Build the database** (requires source feather files)
 ```bash
-# Update paths in db_build.py to point to your feather files
+# Create .env file with paths to your feather files
+touch .env
+
+echo "KINOPLEX_PHOSPHO_PATH='/path/to/your/Total_Phosphocompetency_STY.feather'" >> .env
+echo "KINOPLEX_ST_PSSM_PATH='/path/to/your/ST_PSSM_Percentiles-001.feather'" >> .env
+echo "KINOPLEX_Y_PSSM_PATH='/path/to/your/Y_PSSM_Percentiles.feather'" >> .env
+
 python db_build.py
 ```
 
@@ -116,6 +122,19 @@ python app.py
 5. **Access the application**
 ```
 http://localhost:5000
+```
+
+## ⚙️ Configuration
+
+KinoPlex uses environment variables for configuration using python-dotenv. Create a `.env` file in the project root with the following variables:
+
+```bash
+KINOPLEX_PHOSPHO_PATH="./data/Total_Phosphocompetency_STY.feather" # required
+KINOPLEX_ST_PSSM_PATH="./data/ST_PSSM_Percentiles-001.feather" # required
+KINOPLEX_Y_PSSM_PATH="./data/Y_PSSM_Percentiles.feather" # required
+KINOPLEX_DB_PATH="./data/kinoplex.db" 
+FLASK_RUN_PORT="5000"
+FLASK_RUN_HOST="0.0.0.0"
 ```
 
 ## 📊 API Endpoints
