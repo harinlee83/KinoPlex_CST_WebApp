@@ -101,7 +101,7 @@
 
             // Make the API request
             // The query parameter is URL-encoded automatically by URLSearchParams
-            const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+            const response = await fetch(window.buildUrl(`/api/search?q=${encodeURIComponent(query)}`));
 
             if (!response.ok) {
                 throw new Error('Search request failed');
@@ -283,7 +283,7 @@
 
         // Navigate to the protein page
         // The Flask backend will handle the identifier and render the page
-        window.location.href = `/protein/${encodeURIComponent(identifier)}`;
+        window.location.href = window.buildUrl(`/protein/${encodeURIComponent(identifier)}`);
     }
 
     /**
@@ -302,7 +302,7 @@
         if (!statElements.proteins) return;
 
         try {
-            const response = await fetch('/api/stats');
+            const response = await fetch(window.buildUrl('/api/stats'));
             if (!response.ok) return;
 
             const stats = await response.json();

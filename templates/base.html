@@ -16,6 +16,16 @@
     <!-- Our custom stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
+    <!-- Global JavaScript configuration -->
+    <script>
+        window.BASE_PATH = '{{ base_path }}';
+        
+        // Simple helper function to build URLs with base path
+        window.buildUrl = function(path) {
+            return window.BASE_PATH + path;
+        };
+    </script>
+
     {% block extra_head %}{% endblock %}
 </head>
 <body>

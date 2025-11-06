@@ -37,7 +37,11 @@
 
         navLinks.forEach(link => {
             const linkPath = new URL(link.href).pathname;
-            if (linkPath === currentPath || (currentPath.includes('/protein/') && linkPath === '/')) {
+            const homePath = window.BASE_PATH || '/';
+            const proteinPathPrefix = window.buildUrl('/protein/');
+            
+            if (linkPath === currentPath || 
+                (currentPath.startsWith(proteinPathPrefix) && linkPath === homePath)) {
                 link.style.backgroundColor = 'var(--color-bg-tertiary)';
                 link.style.color = 'var(--color-text-primary)';
             }

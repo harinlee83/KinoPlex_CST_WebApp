@@ -32,7 +32,7 @@ logging.basicConfig(
 db = KinoPlexQuery(os.getenv('KINOPLEX_DB_PATH', './kinoplex.db'))
 
 
-@app.route('/')
+@app.route(f'{base_path}/')
 def index():
     """
     Landing page - the user's first impression of KinoPlex.
@@ -40,17 +40,18 @@ def index():
     This page serves as both branding and gateway. It introduces the tool
     while immediately presenting the primary action: protein search.
     """
-    return render_template('index.html')
+    return render_template('index.html', base_path=base_path)
 
 
-@app.route('/protein/<identifier>')
+@app.route(f'{base_path}/protein/<identifier>')
 def protein_page(identifier):
     protein_info = db.get_protein_info(identifier)
 
     if not protein_info:
         return render_template('error.html',
                                message=f"Protein '{identifier}' not found in database",
-                               search_again=True), 404
+                               search_again=True,
+                               base_path=base_path), 404
 
     data = db.get_complete_protein_data(identifier)
 
@@ -80,10 +81,11 @@ def protein_page(identifier):
     return render_template('protein.html',
                            protein=data['protein'],
                            stats=data['statistics'],
-                           uniprot=uniprot_data)
+                           uniprot=uniprot_data,
+                           base_path=base_path)
 
 
-@app.route('/api/search')
+@app.route(f'{base_path}/api/search')
 def search_proteins():
     """
     Autocomplete API endpoint for protein search.
@@ -111,7 +113,7 @@ def search_proteins():
     return jsonify(results)
 
 
-@app.route('/api/protein/<identifier>')
+@app.route(f'{base_path}/api/protein/<identifier>')
 def api_get_protein_data(identifier):
     """
     Primary data API - returns complete phosphorylation data for visualization.
@@ -209,7 +211,7 @@ def api_get_protein_data(identifier):
         }), 500
 
 
-@app.route('/api/protein/<identifier>/kinase/<kinase_name>')
+@app.route(f'{base_path}/api/protein/<identifier>/kinase/<kinase_name>')
 def get_kinase_profile(identifier, kinase_name):
     """
     Focused API endpoint for kinase-specific analysis.
@@ -233,7 +235,7 @@ def get_kinase_profile(identifier, kinase_name):
     return jsonify(profile)
 
 
-@app.route('/api/protein/<identifier>/sequence')
+@app.route(f'{base_path}/api/protein/<identifier>/sequence')
 def get_protein_sequence(identifier):
     """
     API endpoint to retrieve the full protein sequence.
@@ -275,7 +277,7 @@ def get_protein_sequence(identifier):
         }), 500
 
 
-@app.route('/api/protein/<identifier>/site/<int:position>/motif')
+@app.route(f'{base_path}/api/protein/<identifier>/site/<int:position>/motif')
 def get_site_motif(identifier, position):
     """
     API endpoint to retrieve the sequence motif around a phosphorylation site.
@@ -338,7 +340,7 @@ def get_site_motif(identifier, position):
         }), 500
 
 
-@app.route('/api/stats')
+@app.route(f'{base_path}/api/stats')
 def database_statistics():
     """
     Database statistics endpoint.
@@ -355,7 +357,8 @@ def not_found(error):
     """Custom 404 page that maintains the site aesthetic"""
     return render_template('error.html',
                          message="Page not found",
-                         search_again=True), 404
+                         search_again=True,
+                         base_path=base_path), 404
 
 
 @app.errorhandler(500)
@@ -363,11 +366,12 @@ def internal_error(error):
     """Custom 500 page for graceful error handling"""
     return render_template('error.html',
                          message="An internal error occurred. Please try again later.",
-                         search_again=False), 500
+                         search_again=False,
+                         base_path=base_path), 500
 
-@app.route('/about')
+@app.route(f'{base_path}/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', base_path=base_path)
 
 
 if __name__ == '__main__':

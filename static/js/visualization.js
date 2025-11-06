@@ -139,7 +139,7 @@
     async function loadProteinData() {
         try {
             // Fetch the phosphorylation predictions
-            const response = await fetch(`/api/protein/${PROTEIN_ID}`);
+            const response = await fetch(window.buildUrl(`/api/protein/${PROTEIN_ID}`));
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -168,7 +168,7 @@
      */
     async function loadProteinSequence() {
         try {
-            const response = await fetch(`/api/protein/${PROTEIN_ID}/sequence`);
+            const response = await fetch(window.buildUrl(`/api/protein/${PROTEIN_ID}/sequence`));
 
             if (response.ok) {
                 const data = await response.json();
@@ -1048,7 +1048,7 @@
         if (!panel || !content) return;
 
         // Fetch the sequence motif
-        fetch(`/api/protein/${PROTEIN_ID}/site/${site.position}/motif`)
+        fetch(window.buildUrl(`/api/protein/${PROTEIN_ID}/site/${site.position}/motif`))
             .then(response => response.json())
             .then(motifData => {
                 // Get top kinases
