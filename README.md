@@ -133,6 +133,7 @@ KINOPLEX_PHOSPHO_PATH="./data/Total_Phosphocompetency_STY.feather" # required
 KINOPLEX_ST_PSSM_PATH="./data/ST_PSSM_Percentiles-001.feather" # required
 KINOPLEX_Y_PSSM_PATH="./data/Y_PSSM_Percentiles.feather" # required
 KINOPLEX_DB_PATH="./data/kinoplex.db" 
+KINOPLEX_BASE_PATH=""
 FLASK_RUN_PORT="5000"
 FLASK_RUN_HOST="0.0.0.0"
 ```

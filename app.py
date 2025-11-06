@@ -15,8 +15,11 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
-app = Flask(__name__)
+base_path = os.getenv("KINOPLEX_BASE_PATH", "")
+
+app = Flask(__name__, static_url_path=f'{base_path}/static')
 app.config['SECRET_KEY'] = 'your-secret-key-here'  # Change in production
+app.config['APPLICATION_ROOT'] = base_path
 
 # Configure logging
 logging.basicConfig(
